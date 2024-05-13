@@ -59,10 +59,9 @@ export default function Lab1() {
         My favorite recipe:
         <ol id="wd-your-favorite-recipe">
           <li>Mix dry ingredients.</li>
-          <li>Mix dry ingredients.</li>
-          <li>Mix dry ingredients.</li>
-          <li>Mix dry ingredients.</li>
-          <li>Mix dry ingredients.</li>
+          <li>Mix some more dry ingredients...</li>
+          <li>Mix even more dry ingredients...</li>
+          <li>...</li>
           <li>You forgot to pre-heat the oven...</li>
         </ol>
         <h5>Unordered List Tag</h5>
@@ -280,11 +279,11 @@ export default function Lab1() {
       <input type="date" id="wd-text-fields-dob" value="2000-01-21" />
       <br />
       <h4>Anchor tag</h4>
-      Please
+      Please 
       <a id="wd-lipsum" href="https://www.lipsum.com">
         click here
       </a>
-      to get dummy text
+       to get dummy text
       <br />
     </div>
   );
