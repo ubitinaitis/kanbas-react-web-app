@@ -1,4 +1,4 @@
-import CoursesNavigation from "C:/Users/bitin/2024/summer/webdev/kanbas-react-web-app/src/Kanbas/Navigation";
+import CoursesNavigation from "../Navigation";
 import Modules from "./Modules";
 import Assignments from "./Assignments";
 import Home from "./Home";
