@@ -59,10 +59,10 @@ export default function Quizzes() {
           <div>
             <input
               type="text"
-              className="form-control"
+              className="form-control dropdown-toggle"
               placeholder="🔍 Search Students"
               aria-label="Search Students"
-              style={{ width: "300px", marginRight: "100px" }}
+              style={{ width: "300px", marginRight: "625px" }}
             />
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Quizzes() {
           </div>
           <input
             type="text"
-            className="form-control"
+            className="form-control dropdown-toggle"
             placeholder="🔍 Search Assignments"
             aria-label="Search Assignments"
             style={{ width: "300px" }}
@@ -92,86 +92,175 @@ export default function Quizzes() {
       </div>
 
 
-    <div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Student Name</th>
-            <th>Assignment 1</th>
-            <th>Assignment 2</th>
-            <th>Assignment 3</th>
-            <th>Assignment 4</th>
-            <th>Assignment 5</th>
-            {/* <!-- Add more th elements for each assignment --> */}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Ula</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            
-            {/* <!-- Add more td elements for each assignment --> */}
-          </tr>
-          <tr>
-            <td>Duncan</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
+      <div>
+        <table className="table table-striped table-bordered" style={{marginTop: "10px"}}>
+          <thead>
+            <tr>
+              <td>
+                <b>Student Name</b>
+              </td>
+              <td>
+                <center>
+                  <div>A1 SETUP</div> <div>out of 100</div>
+                </center>
+              </td>
+              <td>
+                <center>
+                  <div>A2 SETUP</div> <div>out of 100</div>
+                </center>
+              </td>
+              <td>
+                <center>
+                  <div>A3 SETUP</div> <div>out of 100</div>
+                </center>
+              </td>
+              <td>
+                <center>
+                  <div>A4 SETUP</div> <div>out of 100</div>
+                </center>
+              </td>
+              <td>
+                <center>
+                  <div>A5 SETUP</div> <div>out of 100</div>
+                </center>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style={{color: "red"}}>Ula</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
+            <tr>
+              <td><div style={{color: "red"}}>Duncan</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
 
-          <tr>
-            <td>Sneha</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
+            <tr>
+              <td><div style={{color: "red"}}>Sneha</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
 
-          <tr>
-            <td>Isabel</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
+            <tr>
+              <td><div style={{color: "red"}}>Isabel</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
 
-          <tr>
-            <td>Indigo</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
+            <tr>
+              <td><div style={{color: "red"}}>Indigo</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
 
-          <tr>
-            <td>Katie</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
+            <tr>
+              <td><div style={{color: "red"}}>Katie</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
 
-          <tr>
-            <td>Phi</td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-            <td><input type="text" className="form-control"/></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <tr>
+              <td><div style={{color: "red"}}>Phi</div></td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+              <td>
+                <input type="text" className="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
