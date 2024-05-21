@@ -1,0 +1,11 @@
+.nav-link {
+    color: white;
+    background-color: black;
+    border:0;
+  }
+  
+  .nav-link.active {
+    color: red;
+    background-color: white;
+    border:0;
+  }
