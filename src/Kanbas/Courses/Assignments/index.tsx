@@ -4,8 +4,22 @@ import Controls from "./Controls";
 import LessonControlButtons from "./LessonControlButtons";
 import { MdArrowDropDown } from "react-icons/md";
 import { BsJournal } from "react-icons/bs";
+import { assignments } from "../../Database";
+import { useParams } from "react-router";
+
+// Use the useParams() hook to retrieve the course's ID and then find all the assignments for that
+// course from the database's assignments array. Render the assignments as links that encode the course's ID
+// and the assignment's ID in the URL's path. The assignment's ID will be used by a router to render the
+//  corresponding assignment in the AssignmentEditor screen.
+
+// { "_id": "A303", "title": "Systems Engineering Exam", "course": "RS103" }
+
+import * as db from "../../Database";
+import { Link } from "react-router-dom";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
   return (
     <div id="wd-modules" style={{ width: "50vw" }}>
       <Controls />
@@ -35,95 +49,42 @@ export default function Assignments() {
             <div style={{ paddingLeft: "60px" }}> </div>
             <AssignmentHeader />
           </div>
-          <ul className="wd-lessons list-group rounded-0">
-            <li
-              className="wd-lesson list-group-item p-3 ps-1"
-              style={{ display: "flex", borderLeft: "10px solid green" }}
-            >
-              <BsGripVertical className="me-2 fs-3" />
-              <BsJournal className="me-2 fs-3 text-success" />
-              <div
-                className="wd-assignment-list-item"
-                style={{ width: "400px", fontSize: "15px" }}
-              >
-                <a
-                  className="wd-assignment-link"
-                  href="#/Kanbas/Courses/1234/Assignments/123"
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    textDecoration: "none",
-                  }}
+          {assignments
+            .filter((assignment: any) => assignment.course === cid)
+            .map((assignment: any) => (
+              <ul className="wd-lessons list-group rounded-0">
+                <li
+                  className="wd-lesson list-group-item p-3 ps-1"
+                  style={{ display: "flex", borderLeft: "10px solid green" }}
                 >
-                  <b>A1</b>
-                </a>{" "}
-                <br></br>
-                <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                <b>Not available until</b> May 6 at 12:00 AM | <b>Due</b> May 13
-                at 11:59 PM | 100 Points
-              </div>
-              <div style={{ paddingLeft: "200px" }}> </div>
-              <LessonControlButtons />
-            </li>
-            <li
-              className="wd-lesson list-group-item p-3 ps-1"
-              style={{ display: "flex", borderLeft: "10px solid green" }}
-            >
-              <BsGripVertical className="me-2 fs-3" />
-              <BsJournal className="me-2 fs-3 text-success" />
-              <div
-                className="wd-assignment-list-item"
-                style={{ width: "400px", fontSize: "15px" }}
-              >
-                <a
-                  className="wd-assignment-link"
-                  href="#/Kanbas/Courses/1234/Assignments/123"
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    textDecoration: "none",
-                  }}
-                >
-                  <b>A2</b>
-                </a>{" "}
-                <br></br>
-                <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                <b>Not available until</b> May 6 at 12:00 AM | <b>Due</b> May 13
-                at 11:59 PM | 100 Points
-              </div>
-              <div style={{ paddingLeft: "200px" }}> </div>
-              <LessonControlButtons />
-            </li>
-            <li
-              className="wd-lesson list-group-item p-3 ps-1"
-              style={{ display: "flex", borderLeft: "10px solid green" }}
-            >
-              <BsGripVertical className="me-2 fs-3" />
-              <BsJournal className="me-2 fs-3 text-success" />
-              <div
-                className="wd-assignment-list-item"
-                style={{ width: "400px", fontSize: "15px" }}
-              >
-                <a
-                  className="wd-assignment-link"
-                  href="#/Kanbas/Courses/1234/Assignments/123"
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    textDecoration: "none",
-                  }}
-                >
-                  <b>A3</b>
-                </a>{" "}
-                <br></br>
-                <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                <b>Not available until</b> May 6 at 12:00 AM | <b>Due</b> May 13
-                at 11:59 PM | 100 Points
-              </div>
-              <div style={{ paddingLeft: "200px" }}> </div>
-              <LessonControlButtons />
-            </li>
-          </ul>
+                  <BsGripVertical className="me-2 fs-3" />
+                  <BsJournal className="me-2 fs-3 text-success" />
+                  <div
+                    className="wd-assignment-list-item"
+                    style={{ width: "400px", fontSize: "15px" }}
+                  >
+                    <Link
+                      className="wd-assignment-link"
+                      to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+                      style={{
+                        color: "black",
+                        fontSize: "20px",
+                        textDecoration: "none",
+                      }}
+                    >
+                      <b>{assignment.title}</b>
+                    </Link>{" "}
+                    <br></br>
+                    <span style={{ color: "red" }}>
+                      Multiple Modules
+                    </span> | <b>Not available until</b> May 6 at 12:00 AM |{" "}
+                    <b>Due</b> May 13 at 11:59 PM | 100 Points
+                  </div>
+                  <div style={{ paddingLeft: "200px" }}> </div>
+                  <LessonControlButtons />
+                </li>
+              </ul>
+            ))}
         </li>
       </ul>
       <br></br> <br></br> <br></br> <br></br>

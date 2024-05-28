@@ -1,6 +1,16 @@
 import { FaPlus } from "react-icons/fa";
+import * as db from "../../Database";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 export default function AssignmentEditor() {
+  const assignments = db.assignments;
+  const { pathname } = useLocation();
+  let aid = pathname.split("/")[5];
+  const { cid } = useParams();
+  let chosenAssignment = assignments.filter((assignment: any) => assignment._id === aid);
+
+  console.log(chosenAssignment);
+
   return (
     <div id="wd-assignments-editor" style={{ width: "50vw" }}>
       <div className="mb-3">
@@ -9,13 +19,14 @@ export default function AssignmentEditor() {
           type="email"
           className="form-control"
           id="exampleFormControlInput1"
-          placeholder="A1"
+          placeholder={aid}
         />
       </div>
       <div className="mb-3">
         <textarea
           className="form-control"
           id="exampleFormControlTextarea1"
+          placeholder={chosenAssignment[0].title}
         ></textarea>
       </div>
       <br />
@@ -248,7 +259,8 @@ export default function AssignmentEditor() {
           className="btn btn-lg btn-secondary"
           style={{ marginLeft: "10px", marginBottom: "30px" }}
         >
-          Cancel
+          <Link
+          to={`/Kanbas/Courses/${cid}/Assignments`}>Cancel</Link>
         </button>
 
         <button
@@ -262,37 +274,3 @@ export default function AssignmentEditor() {
     </div>
   );
 }
-
-// <tr>
-// <td align="right" valign="top">
-//   <label htmlFor="wd-assign-to">Assign</label>
-// </td>
-
-// <td>
-//   <input id="wd-assign-to" value={"Everyone"} />
-// </td>
-// </tr>
-// <tr>
-// <td align="right" valign="top">
-//   <label htmlFor="wd-due-date">Due</label>
-// </td>
-// <td>
-//   <input type="date" id="wd-due-date" value="2024-05-12" />
-// </td>
-// </tr>
-// <tr>
-// <td align="right" valign="top">
-//   <label htmlFor="wd-available-from">Available From</label>
-// </td>
-// <td>
-//   <input type="date" id="wd-available-from" value="2024-05-12" />
-// </td>
-// </tr>
-// <tr>
-// <td align="right" valign="top">
-//   <label htmlFor="wd-available-until">Until</label>
-// </td>
-// <td>
-//   <input type="date" id="wd-available-until" value="2024-05-12" />
-// </td>
-// </tr>
