@@ -9,7 +9,7 @@ import Quizzes from "./Quizzes";
 import { courses } from "../Database";
 import Grades from "./Grades";
 
-export default function Courses() {
+export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
   console.log(course)
@@ -36,6 +36,8 @@ export default function Courses() {
             <Route path="Assignments/:id" element={<AssignmentEditor />} />
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/:id" element={<AssignmentEditor />} />
+            <Route path="Assignments/add" element={<AssignmentEditor />} />
+            <Route path="Assignments/:id/edit" element={<AssignmentEditor />} />
             <Route path="Quizzes" element={<Quizzes />} />
             <Route path="Quizzes/:id" element={<Quizzes />} />
             <Route path="Grades" element={<Grades />} />

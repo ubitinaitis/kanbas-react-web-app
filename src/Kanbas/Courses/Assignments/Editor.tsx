@@ -1,32 +1,53 @@
 import { FaPlus } from "react-icons/fa";
 import * as db from "../../Database";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  addAssignment,
+  editAssignment,
+  updateAssignment,
+  deleteAssignment,
+} from "./reducer";
+import { useState } from "react";
 
 export default function AssignmentEditor() {
-  const assignments = db.assignments;
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const { pathname } = useLocation();
-  let aid = pathname.split("/")[5];
   const { cid } = useParams();
+  const dispatch = useDispatch();
+  let aid = pathname.split("/")[5];
+  let newAssignment = pathname.split("/").includes("add");
+  console.log("is this a new assignment? ", newAssignment);
   let chosenAssignment = assignments.filter((assignment: any) => assignment._id === aid);
-
-  console.log(chosenAssignment);
+  console.log("chosenAssignment: ", chosenAssignment);
+  
+  const [assignmentTitle, setAssignmentTitle] = useState(newAssignment ? '' : chosenAssignment[0].title);
+  const [assignmentDescription, setAssignmentDescription] = useState(newAssignment ? '' : chosenAssignment[0].description);
+  const [assignmentPoints, setAssignmentPoints] = useState(newAssignment ? '' : chosenAssignment[0].points);
+  const [assignmentDueDate, setAssignmentDueDate] = useState(newAssignment ? '' : chosenAssignment[0].dueDate);
+  const [assignmentAvailableFrom, setAssignmentAvailableFrom] = useState(newAssignment ? '' : chosenAssignment[0].availableFrom);
+  const [assignmentAvailableUntil, setAssignmentAvailableUntil] = useState(newAssignment ? '' : chosenAssignment[0].availableUntil);
 
   return (
     <div id="wd-assignments-editor" style={{ width: "50vw" }}>
       <div className="mb-3">
         <label className="form-label">Assignment Name</label>
         <input
-          type="email"
           className="form-control"
           id="exampleFormControlInput1"
-          placeholder={aid}
+          placeholder={newAssignment ? '' : assignmentTitle}
+          value={assignmentTitle}
+          onChange={(a) => setAssignmentTitle(a.target.value) }
         />
       </div>
       <div className="mb-3">
         <textarea
           className="form-control"
           id="exampleFormControlTextarea1"
-          placeholder={chosenAssignment[0].title}
+          placeholder={newAssignment ? '' : assignmentDescription}
+          value={assignmentDescription}
+          onChange={(a) => setAssignmentDescription(a.target.value) }
         ></textarea>
       </div>
       <br />
@@ -44,7 +65,9 @@ export default function AssignmentEditor() {
                 type="email"
                 className="form-control"
                 id="exampleFormControlInput1"
-                placeholder="100"
+                placeholder={newAssignment ? 0 : assignmentPoints}
+                value={assignmentPoints}
+                onChange={(a) => setAssignmentPoints(a.target.value) }
               />
             </div>
             <tr>
@@ -200,10 +223,11 @@ export default function AssignmentEditor() {
                     </label>
                     <div className="mb-3" style={{ display: "flex" }}>
                       <input
-                        type="email"
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder="May 13, 2024, 11:59 PM"
+                        placeholder={newAssignment ? '' : assignmentDueDate}
+                        value={assignmentDueDate}
+                        onChange={(a) => setAssignmentDueDate(a.target.value) }
                       />
                     </div>
                   </div>
@@ -217,10 +241,11 @@ export default function AssignmentEditor() {
                       </label>
                       <div className="mb-3" style={{ display: "flex" }}>
                         <input
-                          type="email"
                           className="form-control"
                           id="exampleFormControlInput1"
-                          placeholder="May 13, 2024, 11:59 PM"
+                          placeholder={newAssignment ? '' : assignmentAvailableFrom}
+                          value={assignmentAvailableFrom}
+                          onChange={(a) => setAssignmentAvailableFrom(a.target.value) }
                         />
                       </div>
                     </div>
@@ -233,10 +258,11 @@ export default function AssignmentEditor() {
                       </label>
                       <div className="mb-3" style={{ display: "flex" }}>
                         <input
-                          type="email"
                           className="form-control"
                           id="exampleFormControlInput1"
-                          placeholder="May 13, 2024, 11:59 PM"
+                          placeholder={newAssignment ? '' : assignmentAvailableUntil}
+                          value={assignmentAvailableUntil}
+                          onChange={(a) => setAssignmentAvailableUntil(a.target.value) }
                         />
                       </div>
                     </div>
@@ -263,13 +289,34 @@ export default function AssignmentEditor() {
           to={`/Kanbas/Courses/${cid}/Assignments`}>Cancel</Link>
         </button>
 
-        <button
-          id="wd-add-module-btn"
-          className="btn btn-lg btn-danger"
-          style={{ marginLeft: "10px", marginBottom: "30px" }}
-        >
-          Save
-        </button>
+        {newAssignment ? (
+          <Link to ={`/Kanbas/Courses/${cid}/Assignments`}>
+          <button
+            onClick={() => {
+              dispatch(addAssignment({ title: assignmentTitle, course: cid, description: assignmentDescription, points: assignmentPoints, dueDate: assignmentDueDate, availableFrom: assignmentAvailableFrom, availableUntil: assignmentAvailableUntil}));
+              setAssignmentTitle("");
+            }}
+            type="button"
+            className="btn btn-danger"
+          >
+            Add Assignment{" "}
+          </button>
+          </Link>
+        ) : (
+          <Link to ={`/Kanbas/Courses/${cid}/Assignments`}>
+          <button
+            onClick={() => {
+              dispatch(updateAssignment({_id: aid, title: assignmentTitle, course: cid, description: assignmentDescription, points: assignmentPoints, dueDate: assignmentDueDate, availableFrom: assignmentAvailableFrom, availableUntil: assignmentAvailableUntil}));
+              setAssignmentTitle("");
+            }}
+            type="button"
+            className="btn btn-danger"
+          >
+            Edit Assignment{" "}
+          </button>
+          </Link>
+        )}
+
       </div>
     </div>
   );
