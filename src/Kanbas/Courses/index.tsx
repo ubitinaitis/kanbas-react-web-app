@@ -6,7 +6,6 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa";
 import Quizzes from "./Quizzes";
-import { courses } from "../Database";
 import Grades from "./Grades";
 
 export default function Courses({ courses }: { courses: any[]; }) {

@@ -4,10 +4,10 @@ import Controls from "./Controls";
 import LessonControlButtons from "./LessonControlButtons";
 import { MdArrowDropDown } from "react-icons/md";
 import { BsJournal } from "react-icons/bs";
-import { assignments } from "../../Database";
 import { useParams } from "react-router";
 
 import {
+  setAssignments,
   addAssignment,
   editAssignment,
   updateAssignment,
@@ -22,14 +22,37 @@ import { useSelector, useDispatch } from "react-redux";
 
 // { "_id": "A303", "title": "Systems Engineering Exam", "course": "RS103" }
 
-import * as db from "../../Database";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as client from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const dispatch = useDispatch();
+
+  const removeAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const createAssignment = async (assignment: any) => {
+    const newAssignment = await client.createAssignment(
+      cid as string,
+      assignment
+    );
+    dispatch(addAssignment(newAssignment));
+  };
+
   const [assignmentTitle, setAssignmentTitle] = useState("");
 
   return (
@@ -38,7 +61,7 @@ export default function Assignments() {
         setAssignmentTitle={setAssignmentTitle}
         assignmentTitle={assignmentTitle}
         addAssignment={() => {
-          dispatch(addAssignment({ title: assignmentTitle, course: cid }));
+          createAssignment({ title: assignmentTitle, course: cid });
           setAssignmentTitle("");
         }}
       />
@@ -77,7 +100,7 @@ export default function Assignments() {
                   style={{ display: "flex", borderLeft: "10px solid green" }}
                 >
                   <BsGripVertical className="me-2 fs-3" />
-                  
+
                   <BsJournal className="me-2 fs-3 text-success" />
                   <div
                     className="wd-assignment-list-item"
@@ -126,13 +149,16 @@ export default function Assignments() {
                     <br></br>
                     <span style={{ color: "red" }}>
                       Multiple Modules
-                    </span> | <b>Not available until</b> [The data may not have dates/points/etc.-- edit the assignment details to view and find out! You can see that they save by editing them to exist/making a new module.]{" "}
+                    </span> | <b>Not available until</b> [The data may not have
+                    dates/points/etc.-- edit the assignment details to view and
+                    find out! You can see that they save by editing them to
+                    exist/making a new module.]{" "}
                   </div>
                   <div style={{ paddingLeft: "200px" }}> </div>
                   <LessonControlButtons
                     assignmentId={assignment._id}
                     deleteAssignment={(assignmentId) => {
-                      dispatch(deleteAssignment(assignmentId));
+                      removeAssignment(assignmentId);
                     }}
                     editAssignment={(assignmentId) =>
                       dispatch(editAssignment(assignmentId))
