@@ -41,6 +41,12 @@ const assignmentsSlice = createSlice({
         a._id === assignmentId ? { ...a, editing: true } : a
       ) as any;
     },
+
+    // editModule: (state, { payload: moduleId }) => {
+    //   state.modules = state.modules.map((m: any) =>
+    //     m._id === moduleId ? { ...m, editing: true } : m
+    //   ) as any;
+    // },
   },
 });
 export const {

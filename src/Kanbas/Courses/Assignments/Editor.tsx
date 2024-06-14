@@ -2,32 +2,72 @@ import { FaPlus } from "react-icons/fa";
 import * as db from "../../Database";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import * as client from "./client";
 import {
   addAssignment,
-  editAssignment,
   updateAssignment,
-  deleteAssignment,
+  setAssignments,
 } from "./reducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AssignmentEditor() {
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const { pathname } = useLocation();
   const { cid } = useParams();
-  const dispatch = useDispatch();
   let aid = pathname.split("/")[5];
+
+  const dispatch = useDispatch();
+
   let newAssignment = pathname.split("/").includes("add");
+
   console.log("is this a new assignment? ", newAssignment);
-  let chosenAssignment = assignments.filter((assignment: any) => assignment._id === aid);
+
+  let chosenAssignment = assignments.filter(
+    (assignment: any) => assignment._id === aid
+  );
+
   console.log("chosenAssignment: ", chosenAssignment);
-  
-  const [assignmentTitle, setAssignmentTitle] = useState(newAssignment ? '' : chosenAssignment[0].title);
-  const [assignmentDescription, setAssignmentDescription] = useState(newAssignment ? '' : chosenAssignment[0].description);
-  const [assignmentPoints, setAssignmentPoints] = useState(newAssignment ? '' : chosenAssignment[0].points);
-  const [assignmentDueDate, setAssignmentDueDate] = useState(newAssignment ? '' : chosenAssignment[0].dueDate);
-  const [assignmentAvailableFrom, setAssignmentAvailableFrom] = useState(newAssignment ? '' : chosenAssignment[0].availableFrom);
-  const [assignmentAvailableUntil, setAssignmentAvailableUntil] = useState(newAssignment ? '' : chosenAssignment[0].availableUntil);
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const createAssignment = async (assignment: any) => {
+    const newwAssignment = await client.createAssignment(
+      cid as string,
+      assignment
+    );
+    dispatch(addAssignment(newwAssignment));
+  };
+
+  const [brandNewAssignment, setBrandNewAssignment] = useState({
+    _id: (newAssignment ? "" : chosenAssignment[0]._id),
+    title: (newAssignment ? "" : chosenAssignment[0].title),
+    course: (newAssignment ? "" : chosenAssignment[0].course),
+    description: (newAssignment ? "" : chosenAssignment[0].description),
+    points: (newAssignment ? "" : chosenAssignment[0].points),
+    dueDate: (newAssignment ? "" : chosenAssignment[0].dueDate),
+    availableFrom: (newAssignment ? "" : chosenAssignment[0].availableFrom),
+    availableUntil: (newAssignment ? "" : chosenAssignment[0].availableUntil)
+  });
+
+  console.log("brandNewAssignment: ", brandNewAssignment);
+
+  const saveAssignment = async (assignment: any) => {
+    console.log("THE ASSIGNMENT ID WE'RE UPDATING IS ", assignment,brandNewAssignment);
+    console.log("THE ASSIGNMENT ID WE'RE UPDATING IS ", assignment.brandNewAssignment._id);
+    try {
+      const status = await client.updateAssignment(assignment.brandNewAssignment, assignment.brandNewAssignment._id);
+      dispatch(updateAssignment(assignment.brandNewAssignment));
+    } catch (error) {
+      console.error('Failed to update assignment:', error);
+    }
+  };
 
   return (
     <div id="wd-assignments-editor" style={{ width: "50vw" }}>
@@ -36,18 +76,18 @@ export default function AssignmentEditor() {
         <input
           className="form-control"
           id="exampleFormControlInput1"
-          placeholder={newAssignment ? '' : assignmentTitle}
-          value={assignmentTitle}
-          onChange={(a) => setAssignmentTitle(a.target.value) }
+          placeholder={newAssignment ? "" :  brandNewAssignment.title}
+          value={brandNewAssignment.title}
+          onChange={(a) => setBrandNewAssignment({...brandNewAssignment, title: a.target.value})}
         />
       </div>
       <div className="mb-3">
         <textarea
           className="form-control"
           id="exampleFormControlTextarea1"
-          placeholder={newAssignment ? '' : assignmentDescription}
-          value={assignmentDescription}
-          onChange={(a) => setAssignmentDescription(a.target.value) }
+          placeholder={newAssignment ? "" :  brandNewAssignment.description}
+          value={brandNewAssignment.description}
+          onChange={(a) => setBrandNewAssignment({...brandNewAssignment, description: a.target.value})}
         ></textarea>
       </div>
       <br />
@@ -62,12 +102,11 @@ export default function AssignmentEditor() {
                 Points
               </label>
               <input
-                type="email"
                 className="form-control"
                 id="exampleFormControlInput1"
-                placeholder={newAssignment ? 0 : assignmentPoints}
-                value={assignmentPoints}
-                onChange={(a) => setAssignmentPoints(a.target.value) }
+                placeholder={newAssignment ? "" :  brandNewAssignment.points}
+                value={brandNewAssignment.points}
+                onChange={(a) => setBrandNewAssignment({...brandNewAssignment, points: a.target.value})}
               />
             </div>
             <tr>
@@ -225,9 +264,9 @@ export default function AssignmentEditor() {
                       <input
                         className="form-control"
                         id="exampleFormControlInput1"
-                        placeholder={newAssignment ? '' : assignmentDueDate}
-                        value={assignmentDueDate}
-                        onChange={(a) => setAssignmentDueDate(a.target.value) }
+                        placeholder={newAssignment ? "" :  brandNewAssignment.dueDate}
+                        value={brandNewAssignment.dueDate}
+                        onChange={(a) => setBrandNewAssignment({...brandNewAssignment, dueDate: a.target.value})}
                       />
                     </div>
                   </div>
@@ -243,9 +282,9 @@ export default function AssignmentEditor() {
                         <input
                           className="form-control"
                           id="exampleFormControlInput1"
-                          placeholder={newAssignment ? '' : assignmentAvailableFrom}
-                          value={assignmentAvailableFrom}
-                          onChange={(a) => setAssignmentAvailableFrom(a.target.value) }
+                          placeholder={newAssignment ? "" :  brandNewAssignment.availableFrom}
+                          value={brandNewAssignment.availableFrom}
+                          onChange={(a) => setBrandNewAssignment({...brandNewAssignment, availableFrom: a.target.value})}
                         />
                       </div>
                     </div>
@@ -260,9 +299,9 @@ export default function AssignmentEditor() {
                         <input
                           className="form-control"
                           id="exampleFormControlInput1"
-                          placeholder={newAssignment ? '' : assignmentAvailableUntil}
-                          value={assignmentAvailableUntil}
-                          onChange={(a) => setAssignmentAvailableUntil(a.target.value) }
+                          placeholder={newAssignment ? "" :  brandNewAssignment.availableUntil}
+                          value={brandNewAssignment.availableUntil}
+                          onChange={(a) => setBrandNewAssignment({...brandNewAssignment, availableUntil: a.target.value})}
                         />
                       </div>
                     </div>
@@ -285,39 +324,38 @@ export default function AssignmentEditor() {
           className="btn btn-lg btn-secondary"
           style={{ marginLeft: "10px", marginBottom: "30px" }}
         >
-          <Link
-          to={`/Kanbas/Courses/${cid}/Assignments`}>Cancel</Link>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments`}>Cancel</Link>
         </button>
 
         {newAssignment ? (
-          <Link to ={`/Kanbas/Courses/${cid}/Assignments`}>
-          <button
-            onClick={() => {
-              dispatch(addAssignment({ title: assignmentTitle, course: cid, description: assignmentDescription, points: assignmentPoints, dueDate: assignmentDueDate, availableFrom: assignmentAvailableFrom, availableUntil: assignmentAvailableUntil}));
-              setAssignmentTitle("");
-            }}
-            type="button"
-            className="btn btn-danger"
-          >
-            Add Assignment{" "}
-          </button>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments`}>
+            <button
+              onClick={() => {
+                createAssignment(brandNewAssignment);
+                setBrandNewAssignment({...brandNewAssignment, _id: "", title: "", description: "", points: "", dueDate: "", availableFrom: "", availableUntil: ""});
+              }}
+              type="button"
+              className="btn btn-danger"
+            >
+              Add Assignment{" "}
+            </button>
           </Link>
         ) : (
-          <Link to ={`/Kanbas/Courses/${cid}/Assignments`}>
-          <button
-            onClick={() => {
-              dispatch(updateAssignment({_id: aid, title: assignmentTitle, course: cid, description: assignmentDescription, points: assignmentPoints, dueDate: assignmentDueDate, availableFrom: assignmentAvailableFrom, availableUntil: assignmentAvailableUntil}));
-              setAssignmentTitle("");
-            }}
-            type="button"
-            className="btn btn-danger"
-          >
-            Edit Assignment{" "}
-          </button>
+          <Link to={`/Kanbas/Courses/${cid}/Assignments`}>
+            <button
+              onClick={() => {
+                saveAssignment({brandNewAssignment
+                });
+              }}
+              type="button"
+              className="btn btn-danger"
+            >
+              Edit Assignment{" "}
+            </button>
           </Link>
         )}
-
       </div>
     </div>
   );
 }
+

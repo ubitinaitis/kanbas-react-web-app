@@ -36,7 +36,6 @@ export default function Assignments() {
     dispatch(deleteAssignment(assignmentId));
   };
 
-
   const fetchAssignments = async () => {
     const assignments = await client.findAssignmentsForCourse(cid as string);
     dispatch(setAssignments(assignments));
@@ -108,31 +107,7 @@ export default function Assignments() {
                   >
                     <b>
                       {" "}
-                      {!assignment.editing && assignment.title}
-                      {assignment.editing && (
-                        <input
-                          className="form-control w-50 d-inline-block"
-                          onChange={(e) =>
-                            dispatch(
-                              updateAssignment({
-                                ...assignment,
-                                title: e.target.value,
-                              })
-                            )
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              dispatch(
-                                updateAssignment({
-                                  ...assignment,
-                                  editing: false,
-                                })
-                              );
-                            }
-                          }}
-                          value={assignment.title}
-                        />
-                      )}
+                      {assignment.title}
                     </b>
                     <br></br>
                     <Link

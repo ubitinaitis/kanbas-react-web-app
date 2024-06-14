@@ -27,6 +27,7 @@ export default function LessonControlButtons({
       <Link
         className="wd-assignment-link"
         to={`/Kanbas/Courses/${cid}/Assignments/${assignmentId}/edit`}
+        onClick={() => editAssignment(assignmentId)}
       >
         <FaPencil className="text-primary me-3" />
       </Link>
